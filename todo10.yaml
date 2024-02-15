@@ -1,0 +1,553 @@
+openapi: 3.0.0
+info:
+  title: To-dos
+  version: 1.0.0
+  description: "
+  # Introduction
+
+  The SAMS Self-Service API allows all employees
+
+  ![](https://i.ibb.co/v3Yt03v/todo-api-background.png)
+
+  ## \U0001F4AB Overview
+
+   To Do API provides a simple way for people to manage their tasks and plan their day. This API can be used to create mobile and web applications.This API is documented using **OpenAPI 3.0**.  [GitHub repo](https://github.com/stoplightio/studio-demo/blob/master/reference/todos/todo.v1.yaml).
+  \n
+
+    # Pet Store APIs
+
+    ## This is a sample Petstore server
+
+
+    ### Contains APIs to manage the pet store
+
+
+    #### Note that the APIs support Basic Authentication and OAUTH
+
+
+    ##### The samples contain Request and Response models
+
+
+    ###### There are status codes defined as well
+
+
+    ### \U0001F9F0 Cross-Origin Resource Sharing\n
+    This API features Cross-Origin Resource Sharing (CORS) implemented in compliance with  [W3C spec](https://www.w3.org/TR/cors/). CORS support is necessary to make calls from the request maker within the API docs.\n
+    ![](https://i.ibb.co/v3Yt03v/todo-api-background.png) \n
+
+    ### \U0001F3C1 Trying out your own API Specification\n
+    Elements can be used to generate API docs for any OpenAPI document. Replace this OpenAPI with a URL to your own OpenAPI document to get started.
+
+
+
+    "
+
+  contact:
+    name: Infor SRA Support
+    email: support@stoplight.io
+    url: 'https://infor.com'
+  license:
+    name: MIT
+    url: 'https://spdx.org/licenses/MIT'
+  termsOfService: 'https://infor.com'
+
+
+servers:
+  - url: 'https://todos.stoplight.io'
+    description: Production
+  - description: Sandbox
+    url: 'https://todos-sandbox.stoplight.io'
+tags:
+  - name: Terms and service
+    description: |-
+      Everything about Termsn and service.But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally circumstances occur in which toil and pain can procure him some great pleasure. To take a trivial example, which of us ever undertakes laborious physical exercise, except to obtain some advantage from it?
+  - name: Todo
+    description: |-
+      This is a resource for creeating, updating, deleteing a bunch of todos.
+  - name: Users
+    description: |-
+     Everything about user resource.
+
+
+
+paths:
+  /todos:
+    get:
+      tags:
+        - Todo
+      summary: List Todos
+      operationId: get-todos
+      description: |-
+
+        Returns a list of todos
+
+        Experimenting with attahcing a  pic
+
+          ![](https://i.ibb.co/v3Yt03v/todo-api-background.png)
+
+
+         **The below table defines the HTTP Status codes that this API may return**
+
+        | Status Code      | Description | Reason                             |
+        | ---------------- | ------------| -----------------------------------|
+        | 200              | OK     | If list of todos returned successfully.   |
+        | 400              | BAD REQUEST | If the request is not valid.       |
+        | 403              | UNAUTHORIZED| If the credentials are invalid.    |
+
+
+        - Available
+        - Pending
+           * Pending todo
+           + Pending to add
+        - Sold
+
+
+
+        The API can be invoked using *curl* like below:
+        ```
+        curl --header accept: application/json -u username:password http://localhost:8080/api/v2/user/jhondoe
+        ```
+        **Sample Output**
+        ```
+        {
+          "id": 2,
+          "username": "jhondoe"
+          "email": "jhon.doe@mail.com"
+        }
+        ```
+
+
+        *add content here in italics*
+      responses:
+        '200':
+          description: This is response for successfull request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Todos'
+              examples:
+                List of Todos:
+                  $ref: '#/components/examples/multiple-todos1'
+                List of Todos1:
+                  $ref: '#/components/examples/multiple-todos'
+                List of Todos3:
+                  $ref: '#/components/examples/jsonObject'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+
+      parameters:
+        - $ref: '#/components/parameters/limit'
+      security: []
+    post:
+      tags:
+        - Todo
+      summary: Create Todo
+      operationId: post-todos
+      description: |-
+        This creates a Todo object
+
+        *Markdown is supported in descriptions. Add information here for users to get accustomed to endpoints*
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Todos'
+            examples:
+                Example Todo1:
+                  $ref: '#/components/examples/todo1'
+                Example Todo2:
+                  $ref: '#/components/examples/todo2'
+      responses:
+        '201':
+          description: New Todo Created
+          content:
+            multipart/form-data:
+              schema:
+                $ref: '#/components/schemas/Todos'
+              examples:
+                Example Todo1:
+                  $ref: '#/components/examples/todoresp1'
+                Example Todo2:
+                  $ref: '#/components/examples/todoresp2'
+                Example Todo3:
+                  $ref: '#/components/examples/todo'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+      security:
+        - ApiKeyAuth: []
+    delete:
+      tags:
+        - Todo
+      summary: Delete Todo
+      operationId: delete-todos-id
+      responses:
+        '200':
+          description: Todo Deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Todos'
+              examples:
+                Example Todo:
+                  $ref: '#/components/examples/todo'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      description: |-
+        Delete a todo using an ID
+
+        *Markdown is supported in descriptions. Add information here for users to get accustomed to endpoints*
+      security:
+        - ApiKeyAuth: []
+    patch:
+      tags:
+        - Todo
+      summary: Update Todo
+      operationId: patch-todos-id
+      responses:
+        '200':
+          description: Todo Updated
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      deprecated: true
+      description: |-
+        Don't use this endpoint. Notice it's deprecated.
+
+        *Markdown is supported in descriptions. Add information here for users to get accustomed to endpoints*
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Todos'
+      security:
+        - ApiKeyAuth: []
+  /users:
+    get:
+      summary: Get User
+      tags:
+        - Users
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      operationId: get-users
+      description: |-
+        Get a user by ID
+
+        *Markdown is supported in descriptions. Add information here for users to get accustomed to endpoints*
+      security: []
+    parameters: []
+    post:
+      tags:
+        - Users
+      summary: Create User
+      operationId: post-users-userID
+      responses:
+        '201':
+          description: User Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+              examples:
+                Example User:
+                  $ref: '#/components/examples/user'
+
+
+      description: Create a User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+            examples: {}
+      security:
+        - ApiKeyAuth: []
+components:
+  schemas:
+    Todos:
+      description: I'm a model's description.
+      type: object
+      title: Todo
+      properties:
+        id:
+          type: number
+          minimum: 0
+          maximum: 9999
+          description: ID of the task
+          readOnly: true
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: Name of the task
+        completed:
+          type: boolean
+          default: false
+          description: Boolean indicating if the task has been completed or not
+        completed_at:
+          type: string
+          format: date-time
+          description: Time when the task was completed
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          description: Time when the task was created
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          description: Time when the task was updated
+          readOnly: true
+      required:
+        - id
+        - name
+        - completed_at
+        - created_at
+        - updated_at
+    User:
+      description: ''
+      type: object
+      title: User
+      properties:
+        userId:
+          type: number
+          description: ID of the user
+          readOnly: true
+        firstName:
+          type: string
+          minLength: 1
+          description: ''
+        lastName:
+          type: string
+          minLength: 1
+          description: ''
+        phoneNumber:
+          type: string
+          minLength: 1
+          description: Official Phone Number
+        emailAddress:
+          type: string
+          minLength: 1
+          description: Work Email Address
+      required:
+        - userId
+        - firstName
+        - lastName
+        - phoneNumber
+        - emailAddress
+  securitySchemes:
+    ApiKeyAuth:
+      name: apikey
+      type: apiKey
+      in: query
+      description: Just use `123`. It's super secure ;)
+  parameters:
+    limit:
+      name: limit
+      in: query
+      required: false
+      schema:
+        type: number
+      description: Return a limited set of results *I'm a shared parameter. I can be reused in multiple endpoints!*
+    ID:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: ID of the Todo
+  responses:
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            title: Error
+            type: object
+            description: A standard error object.
+            x-tags:
+              - Common
+            properties:
+              status:
+                type: string
+                description: A code.
+              error:
+                type: string
+            required:
+              - status
+              - error
+    Unauthorized:
+      description: Action not allowed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+              - message
+  examples:
+    todo:
+      summary: This is the an example response body
+      value:
+        id: 0
+        name: string
+        completed: true
+        completed_at: '2019-08-24T14:15:22Z'
+        created_at: '2019-08-24T14:15:22Z'
+        updated_at: '2019-08-24T14:15:22Z'
+    todoref:
+      summary: This is the an example response body using reference
+      value:
+        - $ref: "#/components/examples/todo"
+    todoresp1:
+      summary: todo1 response
+      description: |-
+       ### Example response above for request body as below
+        ```
+        {
+          "name": "todo1"
+        }
+        ```
+      value:
+        id: 1
+        name: string
+        completed: true
+        completed_at: '2021-08-24T14:15:22Z'
+        created_at: '2021-08-24T14:15:22Z'
+        updated_at: '2021-08-24T14:15:22Z'
+    todoresp2:
+      summary: todo2 response
+      description: |-
+       ### Example response above for request body as below
+        ```
+        {
+          "name": "todo2"
+        }
+        ```
+      value:
+        id: 2
+        name: string
+        completed: true
+        completed_at: '2019-08-24T14:15:22Z'
+        created_at: '2019-08-24T14:15:22Z'
+        updated_at: '2019-08-24T14:15:22Z'
+    todo1:
+      summary: This is todo1
+      description: |-
+       Example request todo1
+      value:
+        name: todo1
+    todo2:
+      summary: This is the todo2
+      description: |-
+       Example request todo2
+      value:
+        name: todo2
+    jsonObject:
+        summary: A sample json object
+        value:
+          {
+            "pets" : [
+              {
+                "petType" : "DOG",
+                "name" : "Ben"
+              }
+            ]
+          }
+
+    multiple-todos:
+      summary: This is the first todo
+      description: |-
+
+       # Returns a list of todos
+
+        If the request is like below, we get the above example response
+
+       ## CURL request
+
+        <code>awscurl -X POST --region us-east-2 https://login.cts.infor.com/v1/token -d 'identifier_type=role_arn&scope=sams-api' --profile cloudauto --region us-east-2</code>
+
+       ##   With request json  body as:
+
+               {
+                "id": 0,
+                "name": "my todo",
+                "completed": true
+                }
+      value:
+        - id: 0
+          name: my todo
+          completed: true
+          completed_at: '2019-08-24T14:15:22Z'
+          created_at: '2019-08-24T14:15:22Z'
+          updated_at: '2019-08-24T14:15:22Z'
+        - id: 1
+          name: another todo
+          completed: false
+          completed_at: '2019-08-24T14:15:22Z'
+          created_at: '2019-08-24T14:15:22Z'
+          updated_at: '2019-08-24T14:15:22Z'
+        - id: 2
+          name: yet another todo
+          completed: false
+          completed_at: '2019-08-24T14:15:22Z'
+          created_at: '2019-08-24T14:15:22Z'
+          updated_at: '2019-08-24T14:15:22Z'
+    multiple-todos1:
+      summary: Edge Case 1
+      description: |-
+
+        For the input with edge case like below, when API invoked using *curl* like below, we get above output:
+        ```
+        curl --header accept: application/json -u username:password http://localhost:8080/api/todos
+        ```
+        **Sample Input**
+        ```
+        {
+          "id": 2,
+          "username": "jhondoe"
+          "email": "jhon.doe@mail.com"
+        }
+        ```
+      value:
+        - id: 0
+          name: how to todo
+          completed: true
+          completed_at: '2019-08-24T14:15:22Z'
+          created_at: '2019-08-24T14:15:22Z'
+          updated_at: '2019-08-24T14:15:22Z'
+        - id: 1
+          name: thrid todo
+          completed: false
+          completed_at: '2019-08-24T14:15:22Z'
+          created_at: '2019-08-24T14:15:22Z'
+          updated_at: '2019-08-24T14:15:22Z'
+    user:
+      value:
+        userId: 2
+        firstName: racks
+        lastName: jacson
+        phoneNumber: '123456'
+        emailAddress: racks.jacson@learningcontainer.com
