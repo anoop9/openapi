@@ -1,0 +1,15 @@
+name: dry-run
+in: query
+required: false
+description: |-
+  Flag that indicates whether the post should be committed, or it concerns only a test run.
+  When set to 'Yes', it indicates a test run. So, the returned result will indicate what the 
+  change would be like when calling the API, but not actually committed. When set to 'No', 
+  it will be executed/committed.
+schema:
+  type: string
+  enum:
+    - 'Yes'
+    - 'No'
+  example: 'Yes'
+  default: 'Yes'
